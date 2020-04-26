@@ -1,13 +1,159 @@
 FORMAT: 1A
 HOST: http://localhost/loja/xml.php
 
-# API PHP Ecommerce
-API destinada ao ecommerce PHP onde plataformas integradoras poderão solicitar acesso para a utilização.
+# API Ecommerce PHP
 
-**Note:** Aqui está um exemplo de nota
-[Raw](https://raw.github.com/apiaryio/api-blueprint/master/examples/01.%20Simplest%20API.md)
+API destinada ao Ecommerce desenvolvido pela OLI onde através dos métodos aqui expressos, integradores poderão se comunicar com o sistema.
 
-# GET /
+# Group API
+
+## Sobre [/]
+
+É importante salientar que o acesso à API é controlado e restrito. Para obter seu acesso entre em contato através do email: api@oliconsultoria.com.br. O assunto do email deve ser: [ACESSO API].
+
+# Group Produto
+
+## Produtos [/]
+
+### Listar produtos [GET]
+
++ Response 200 (text/xml; charset=utf-8)
+    + Attributes (array[Message])
+
++ Response 404 (text/xml)
+    + Attributes (Error)
+
+
+# Group Messages
+Group of all messages-related resources.
+
+## My Message [/message/{id}]
+Here we have added the message `id` parameter as an 
+[URI Template variable](http://tools.ietf.org/html/rfc6570) in the Message
+resource's URI. Note the parameter name `id` is enclosed in curly brackets. We
+will discuss this parameter in the `Parameters` section below, where we will
+also set its example value to `1` and declare it of an arbitrary 'number' type.
+
++ Parameters
+
+    + id: 1 (number) - An unique identifier of the message.
+
+### Retrieve a Message [GET]
+
++ Request Plain Text Message
+
+    + Headers
+
+            Accept: text/plain
+
 + Response 200 (text/plain)
 
-        Hello World!
+    + Headers
+
+            X-My-Message-Header: 42
+
+    + Body
+
+            Hello World!
+
++ Request JSON Message
+
+    + Headers
+
+            Accept: application/json
+
++ Response 200 (application/json)
+
+    + Headers
+
+            X-My-Message-Header: 42
+
+    + Body
+
+            {
+              "id": 1,
+              "message": "Hello World!"
+            }
+
+### Update a Message [PUT]
+
++ Request Update Plain Text Message (text/plain)
+
+        All your base are belong to us.
+
++ Request Update JSON Message (application/json)
+
+        { "message": "All your base are belong to us." }
+
++ Response 204
+
+## All My Messages [/messages{?limit}]
+A resource representing all of my messages in the system.
+
+We have added the query URI template parameter - `limit`. This parameter is
+used for limiting the number of results returned by some actions on this
+resource. It does not affect every possible action of this resource, therefore
+we will discuss it only at the particular action level below.
+
+### Retrieve all Messages [GET]
+
++ Parameters
+
+    + limit (number, optional) - The maximum number of results to return.
+        + Default: `20`
+
++ Response 200 (application/json)
+
+        [
+          {
+            "id": 1,
+            "message": "Hello World!"
+          },
+          {
+            "id": 2,
+            "message": "Time is an illusion. Lunchtime doubly so."
+          },
+          {
+            "id": 3,
+            "message": "So long, and thanks for all the fish."
+          }
+        ]
+
+
+# Data Structures
+
+## Message (object)
++ subject (string) - Assunto da mensagem
++ body (string) - Corpo da mensagem
+
+
+## MessageUpdate (Message)
++ id_message (number) - Id da mensagem
+
+## File (object)
++ id_file (number) - Id do arquivo
++ name (string) - Nome do arquivo
++ url (string) - Url do arquivo
+
+## Created (object)
++ id (number) - Id gerado
+
+## Id (object)
++ id (number) - Id a ser processado
+
+## Error (object)
++ code: 400 (number) - Status code
++ message (string) - Mensagem do status
++ description (string) - Descrição do status
+
+
+## Multi (object)
++ id (number) - Código da entidade
++ code: 200 (number) - Status code
++ message (string) - Descrição do status
+
+
+## User (object)
++ id (number) - Código do usuário
++ name (string) - Nome do usuário
++ token (string) - Token do usuário conectado
